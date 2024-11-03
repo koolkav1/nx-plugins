@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "signals-store": {
+      "factory": "./ngrx-signals-store/generator",
+      "schema": "./ngrx-signals-store/schema.json",
+      "description": "signals-store generator"
+    }
+  }
+}

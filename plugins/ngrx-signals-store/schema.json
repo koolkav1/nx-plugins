@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "signals-store",
+  "title": "Create an NgRx Signals Store",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the store",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the store?"
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project to add the store to",
+      "x-prompt": "Which project would you like to add the store to?"
+    },
+    "path": {
+      "type": "string",
+      "description": "The path to create the store",
+      "x-prompt": "Where would you like to create the store? (e.g., libs/feature-name)"
+    },
+    "prefix": {
+      "type": "string",
+      "description": "The prefix to use for the store",
+      "default": "app",
+      "x-prompt": "What prefix would you like to use for the store? (default: app)"
+    },
+    "angularService": {
+      "type": "string",
+      "description": "The angular service to integrate the store with",
+      "x-prompt": "Which service would you like to integrate your store with?"
+    },
+    "angularServiceMethod": {
+      "type": "string",
+      "description": "A default method to integrate with",
+      "x-prompt": "What's the name of the method to retrieve data from?"
+    },
+    "skipTests": {
+      "type": "boolean",
+      "description": "Skip creating spec files",
+      "default": false,
+      "x-prompt": {
+        "message": "Would you like to skip generating test files?",
+        "type": "confirmation"
+      }
+    },
+    "stateProperties": {
+      "type": "string",
+      "description": "Add additional state property",
+      "x-prompt": "Add additional state property like count:number or order:string"
+    }
+  },
+  "required": ["name", "project", "path", "angularService", "angularServiceMethod"]
+}
