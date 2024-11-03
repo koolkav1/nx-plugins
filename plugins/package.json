@@ -15,5 +15,12 @@
   "private": false,
   "generators": "./generators.json",
   "author": "Kav Khalsa",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": "git@github.com:koolkav1/nx-plugins.git",
+  "sideEffects": false,
+  "homepage": "https://github.com/koolkav1/nx-plugins",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }
