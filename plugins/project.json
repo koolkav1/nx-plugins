@@ -3,40 +3,41 @@
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "plugins/src",
   "projectType": "library",
-  "tags": [],
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+    "prebuild": {
+      "executor": "nx:run-commands",
       "options": {
-        "outputPath": "dist/plugins",
-        "main": "plugins/src/index.ts",
-        "tsConfig": "plugins/tsconfig.lib.json",
-        "assets": [
-          "plugins/*.md",
-          {
-            "input": "./plugins/src",
-            "glob": "**/!(*.ts)",
-            "output": "./src"
-          },
-          {
-            "input": "./plugins/src",
-            "glob": "**/*.d.ts",
-            "output": "./src"
-          },
-          {
-            "input": "./plugins",
-            "glob": "generators.json",
-            "output": "."
-          },
-          {
-            "input": "./plugins",
-            "glob": "executors.json",
-            "output": "."
-          }
-        ]
+        "command": "npm run prebuild:plugins"
       }
     },
+    "build": {
+  "executor": "@nx/js:tsc",
+  "outputs": ["{options.outputPath}"],
+  "options": {
+    "outputPath": "dist/plugins",
+    "main": "plugins/src/index.ts",
+    "tsConfig": "plugins/tsconfig.lib.json",
+    "assets": [
+      "plugins/*.md",
+      {
+        "input": "./plugins",
+        "glob": "ngrx-signals-store/**/*",
+        "output": "./ngrx-signals-store"
+      },
+      {
+        "input": "./plugins",
+        "glob": "generators.json",
+        "output": "."
+      },
+      {
+        "input": "./plugins",
+        "glob": "package.json",
+        "output": "."
+      }
+    ]
+  },
+  "dependsOn": ["^prebuild"]
+},
     "lint": {
       "executor": "@nx/eslint:lint"
     },

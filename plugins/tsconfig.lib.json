@@ -5,6 +5,17 @@
     "declaration": true,
     "types": ["node"]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
+  "include": [
+    "src/**/*.ts",
+    "ngrx-signals-store/**/*.ts",
+    "dist/src/generated/**/*.ts"  // Add this line
+  ],
+  "exclude": [
+    "jest.config.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "ngrx-signals-store/files/__fileName__.store.ts",
+    "ngrx-signals-store/**/*.spec.ts",
+    "ngrx-signals-store/**/*.test.ts"
+  ]
 }

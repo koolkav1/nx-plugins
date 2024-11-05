@@ -37,7 +37,7 @@ describe('<%= className %>Store', () => {
         expect(store.filter()).toEqual('Today\'s Hits');
       });
     
-      it('should load playlists based on the filter and update the state', fakeAsync(() => {
+      it('should load data based on the filter and update the state', fakeAsync(() => {
         // mock the service response
         get<%= angularService %>.<%= angularServiceMethod %>.mockReturnValue(
           of( mockData )
