@@ -25,7 +25,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-  "prebuild:plugins": "node process-templates.js",
+ "prebuild:plugins": "tsc && node dist/process-templates.js",
   "build": "nx build plugins"
 }
 }
