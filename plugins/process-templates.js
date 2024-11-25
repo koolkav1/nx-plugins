@@ -1,32 +1,26 @@
+// plugins/ngrx-signals-store/scripts/process-templates.js
 const fs = require('fs');
 const path = require('path');
 const ejs = require('ejs');
 
-// Mocked data, replace with actual values from the generator's options
-const generatorOptions = {
-  className: 'ClassName',
-  fileName: 'FileName',
-  angularService: 'Service', 
-  stateProperties: 'count:number',
-  angularServiceMethod: 'getService',
-  projectName: 'ProjectName',
+// Get the absolute path to the project root
+const projectRoot = path.resolve(__dirname, '../../../');
 
+// Paths relative to project root
+const templatesDir = path.join(projectRoot, 'plugins/ngrx-signals-store/files');
+const outputDir = path.join(projectRoot, 'dist/plugins/ngrx-signals-store/files');
+
+// Sample data for template processing
+const data = {
+  className: 'Sample',
+  fileName: 'sample',
+  angularService: 'SampleService',
+  angularServiceMethod: 'getSamples',
+  statePropertiesParsed: [
+    { name: 'id', type: 'string' },
+    { name: 'name', type: 'string' }
+  ]
 };
-console.log('generator Options: ', generatorOptions);
-// Convert the stateProperties string to an array of { name, type } objects
-const parseStateProperties = (properties) => {
-  return properties.split(',').map((prop) => {
-    const [name, type] = prop.split(':');
-    return { name: name.trim(), type: type.trim() };
-  });
-};
-
-// Parsed state properties
-const statePropertiesParsed = parseStateProperties(generatorOptions.stateProperties);
-
-// Paths
-const templatesDir = path.join(__dirname, 'plugins/ngrx-signals-store/files');
-const outputDir = path.join(__dirname, 'dist/src/generated');
 
 // Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
@@ -36,26 +30,20 @@ if (!fs.existsSync(outputDir)) {
 // Process each template file
 fs.readdirSync(templatesDir).forEach((file) => {
   const templatePath = path.join(templatesDir, file);
-  const outputPath = path.join(outputDir, file.replace('__fileName__', generatorOptions.fileName));
+  const outputFileName = file.replace('__fileName__', data.fileName);
+  const outputPath = path.join(outputDir, outputFileName);
 
-  // Render the template with data
-  const data = {
-    className: generatorOptions.className,
-    fileName: generatorOptions.fileName,
-    angularService: generatorOptions.angularService,
-    angularServiceMethod: generatorOptions.angularServiceMethod,
-    statePropertiesParsed
-  };
-
-  // Only process files, not directories
   if (fs.lstatSync(templatePath).isFile()) {
-    ejs.renderFile(templatePath, data, (err, result) => {
-      if (err) {
-        console.error(`Error processing template ${file}:`, err);
-        return;
-      }
+    const template = fs.readFileSync(templatePath, 'utf-8');
+    try {
+      const result = ejs.render(template, data);
       fs.writeFileSync(outputPath, result);
       console.log(`Processed ${file} -> ${outputPath}`);
-    });
+    } catch (err) {
+      console.error(`Error processing template ${file}:`, err);
+      process.exit(1);
+    }
   }
 });
+
+console.log('Template processing complete!');

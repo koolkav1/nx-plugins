@@ -1,23 +1,29 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../dist/out-tsc",
     "declaration": true,
     "types": ["node"],
-    "module": "esnext",
-    "target": "esnext"
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es2015",
+    "baseUrl": ".",
+    "paths": {
+      "@kav-khalsa/ngrx-signal-store": ["./src/index.ts"]
+    },
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",
-    "ngrx-signals-store/**/*.ts",
-    "dist/src/generated/**/*.ts"  // Add this line
+    "ngrx-signals-store/**/*.ts"
   ],
   "exclude": [
     "jest.config.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.test.ts",
-    "ngrx-signals-store/files/__fileName__.store.ts",
-    "ngrx-signals-store/**/*.spec.ts",
-    "ngrx-signals-store/**/*.test.ts"
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/files/**/*"
   ]
 }

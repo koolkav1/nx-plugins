@@ -1,17 +1,33 @@
-const {
+import {
   formatFiles,
   generateFiles,
-  getWorkspaceLayout,
   names,
   offsetFromRoot,
   Tree,
-} = require('@nx/devkit');
-const path = require('path');
+} from '@nx/devkit';
+import * as path from 'path';
+import { SignalsStoreGeneratorSchema } from './schema.js';
 
-// Remove the type import and definition since they won't be available at runtime
-// The schema types will be handled by TypeScript during development only
+interface StateProperty {
+  name: string;
+  type: string;
+}
 
-function parseStateProperties(stateProperties = '') {
+interface NormalizedSchema extends SignalsStoreGeneratorSchema {
+  projectName: string;
+  projectRoot: string;
+  projectDirectory: string;
+  parsedPath: {
+    name: string;
+    path: string;
+  };
+  angularService: string;
+  angularServiceMethod: string;
+  statePropertiesParsed: StateProperty[];
+  fileName: string;
+}
+
+function parseStateProperties(stateProperties = ''): StateProperty[] {
   if (!stateProperties) return [];
   
   return stateProperties.split(',').map(prop => {
@@ -20,13 +36,13 @@ function parseStateProperties(stateProperties = '') {
   });
 }
 
-function normalizeOptions(tree: any, options: { name: any; path: string; angularService: any; angularServiceMethod: any; stateProperties: string | undefined; }) {
+function normalizeOptions(tree: Tree, options: SignalsStoreGeneratorSchema): NormalizedSchema {
   const name = names(options.name).fileName;
   const projectDirectory = options.path ?? '';
   const projectName = name;
   const projectRoot = projectDirectory;
-  const angularService = options.angularService;
-  const angularServiceMethod = options.angularServiceMethod;
+  const angularService = options.angularService ?? '';
+  const angularServiceMethod = options.angularServiceMethod ?? '';
   const parsedPath = {
     name,
     path: projectRoot
@@ -47,7 +63,7 @@ function normalizeOptions(tree: any, options: { name: any; path: string; angular
   };
 }
 
-function addFiles(tree: { exists: (arg0: any) => any; rename: (arg0: any, arg1: any) => void; }, options: { name: any; projectRoot: any; parsedPath: { path: any; }; fileName: any; }) {
+function addFiles(tree: Tree, options: NormalizedSchema) {
   const templateOptions = {
     ...options,
     ...names(options.name),
@@ -55,18 +71,16 @@ function addFiles(tree: { exists: (arg0: any) => any; rename: (arg0: any, arg1: 
     template: '',
   };
 
-  // Generate the store file with custom name
   generateFiles(
     tree,
     path.join(__dirname, 'files'),
     options.parsedPath.path,
     {
       ...templateOptions,
-      tmpl: '', // Add this to support template file naming
+      tmpl: '',
     }
   );
 
-  // Rename the generated file to match our desired pattern
   const generatedPath = path.join(options.parsedPath.path, 'index.ts');
   const targetPath = path.join(options.parsedPath.path, options.fileName);
   
@@ -75,13 +89,10 @@ function addFiles(tree: { exists: (arg0: any) => any; rename: (arg0: any, arg1: 
   }
 }
 
-async function generator(tree: any, options: any) {
+export async function generateSignalsStore(tree: Tree, options: SignalsStoreGeneratorSchema) {
   const normalizedOptions = normalizeOptions(tree, options);
   addFiles(tree, normalizedOptions);
   await formatFiles(tree);
 }
 
-// Export the generator as the default export
-module.exports = generator;
-module.exports.normalizeOptions = normalizeOptions;
-module.exports.addFiles = addFiles;
+export default generateSignalsStore;

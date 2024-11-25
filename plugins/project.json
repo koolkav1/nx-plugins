@@ -7,46 +7,39 @@
     "prebuild": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npm run prebuild:plugins"
+        "commands": [
+          "node plugins/ngrx-signals-store/scripts/process-templates.js"
+        ]
       }
     },
     "build": {
-  "executor": "@nx/js:tsc",
-  "outputs": ["{options.outputPath}"],
-  "options": {
-    "outputPath": "dist/plugins",
-    "main": "plugins/src/index.ts",
-    "tsConfig": "plugins/tsconfig.lib.json",
-    "assets": [
-      "plugins/*.md",
-      {
-        "input": "./plugins",
-        "glob": "ngrx-signals-store/**/*",
-        "output": "./ngrx-signals-store"
-      },
-      {
-        "input": "./plugins",
-        "glob": "generators.json",
-        "output": "."
-      },
-      {
-        "input": "./plugins",
-        "glob": "package.json",
-        "output": "."
-      }
-    ]
-  },
-  "dependsOn": ["^prebuild"]
-},
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
       "options": {
-        "jestConfig": "plugins/jest.config.ts"
-      }
+        "outputPath": "dist/plugins",
+        "main": "plugins/src/index.ts",
+        "tsConfig": "plugins/tsconfig.lib.json",
+        "format": ["esm"],
+        "assets": [
+          "plugins/*.md",
+          {
+            "input": "./plugins/ngrx-signals-store",
+            "glob": "files/**/*",
+            "output": "./ngrx-signals-store"
+          },
+          {
+            "input": "./plugins",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./plugins",
+            "glob": "package.json",
+            "output": "."
+          }
+        ]
+      },
+      "dependsOn": ["prebuild"]
     }
   }
 }
