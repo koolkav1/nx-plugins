@@ -1,23 +1,21 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist/out-tsc",
+    "outDir": "../dist/plugins",
     "declaration": true,
     "types": ["node"],
     "module": "es2015",
-    "moduleResolution": "node",
     "target": "es2015",
+    "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
       "@kav-khalsa/ngrx-signal-store": ["./src/index.ts"]
     },
     "rootDir": ".",
     "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "esModuleInterop": true
   },
   "include": [
-    "src/**/*.ts",
     "ngrx-signals-store/**/*.ts"
   ],
   "exclude": [

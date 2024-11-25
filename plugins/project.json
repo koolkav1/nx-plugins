@@ -17,23 +17,27 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/plugins",
-        "main": "plugins/src/index.ts",
+        "main": "plugins/ngrx-signals-store/generator.ts",
         "tsConfig": "plugins/tsconfig.lib.json",
         "format": ["esm"],
         "assets": [
-          "plugins/*.md",
           {
-            "input": "./plugins/ngrx-signals-store",
-            "glob": "files/**/*",
-            "output": "./ngrx-signals-store"
+            "input": "plugins/ngrx-signals-store",
+            "glob": "schema.json",
+            "output": "generators/signals-store"
           },
           {
-            "input": "./plugins",
+            "input": "plugins/ngrx-signals-store/files",
+            "glob": "**/*",
+            "output": "generators/signals-store/files"
+          },
+          {
+            "input": "plugins",
             "glob": "generators.json",
             "output": "."
           },
           {
-            "input": "./plugins",
+            "input": "plugins",
             "glob": "package.json",
             "output": "."
           }

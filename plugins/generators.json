@@ -1,9 +1,9 @@
 {
-  "generators": {
-    "signals-store": {
-      "factory": "./ngrx-signals-store/generator",
-      "schema": "./ngrx-signals-store/schema.json",
-      "description": "signals-store generator"
-    }
+"generators": {
+  "signals-store": {
+    "factory": "./generators/signals-store/generator.js",
+    "schema": "./generators/signals-store/schema.json",
+    "description": "signals-store generator"
   }
+}
 }
