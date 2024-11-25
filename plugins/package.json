@@ -1,6 +1,6 @@
 {
   "name": "@kav-khalsa/ngrx-signal-store",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "dependencies": {
     "@nx/devkit": "20.0.7",
     "tslib": "^2.3.0",
@@ -10,7 +10,7 @@
     "rxjs": "~7.8.0",
     "ejs": "^3.1.10"
   },
-  "type": "module",
+  "type": "commonjs",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
   "private": false,
@@ -25,7 +25,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
- "prebuild:plugins": "tsc && node dist/process-templates.js",
-  "build": "nx build plugins"
-}
+    "prebuild:plugins": "tsc && node dist/process-templates.js",
+    "build": "tsc -p tsconfig.json && nx build plugins",
+    "postbuild": "node scripts/copy-templates.js"
+  }
 }
